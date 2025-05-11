@@ -95,6 +95,9 @@
                 <h2>2/ Évaluation de l’Activité Physique (niveau actuel et visé, motivation)</h2>
                 <div class="sub-group">
                     <h3>2a : Niveau actuel :</h3>
+                    <div class="sub-group">
+                        <label>Statut testé par le : <input type="radio" name="questionnaire" value="GPAQ"> GPAQ <input type="radio" name="questionnaire" value="Marshall"> Marshall</label>
+                    </div>
                     <label><input type="radio" name="niveau_actuel" value="actif"> Actif</label>
                     <label><input type="radio" name="niveau_actuel" value="inactif"> Inactif</label>
                     <div id="actif-subgroup" class="hidden">
@@ -104,11 +107,6 @@
                     <div id="inactif-subgroup" class="hidden">
                         <label><input type="radio" name="ap_envisagee" value="oui"> AP envisagée dans les 30 jours</label>
                         <label><input type="radio" name="ap_envisagee" value="non"> Non</label>
-                    </div>
-                    <div class="sub-group">
-                        <h3>Statut « Actif/Inactif » testé par le GPAQ ? le Marshall ?</h3>
-                        <label><input type="radio" name="questionnaire" value="GPAQ"> GPAQ</label>
-                        <label><input type="radio" name="questionnaire" value="Marshall"> Marshall</label>
                     </div>
                     <div>
                         <label><input type="radio" name="niveau_actuel" value="sedentaire"> Sédentaire</label>

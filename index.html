@@ -314,8 +314,7 @@
                 if (niveauActuel === 'actif') {
                     statutActif = 'actif';
                 } else if (niveauActuel === 'inactif') {
-                    const apEnvisagee = document.querySelector('input[name="ap_envisagee"]:checked').value;
-                    statutActif = apEnvisagee === 'oui' ? 'inactif' : 'inactif';
+                    statutActif = 'inactif';
                 }
 
                 const sedentaire = document.querySelector('input[name="sedentaire"]:checked').value;
@@ -373,7 +372,7 @@
                 const reportText = `
                     Merci de m’avoir adressé ${titre} __________ pour une consultation d’activité physique. Son niveau actuel d’activité physique est le suivant : ${statutActif}${statutSedentaire}${questionnaireText}. Le niveau d’activité physique que ${titre} vise est : ${niveauVise}. Son niveau de risque cardio-vasculaire est ${rcv}.
 
-                    Sur le plan motivationnel, ${pronom} est au stade de ${getStadeMotivation()}. ${titre} présente les freins suivants : ${freins}, et les leviers suivants : ${leviers}. L’activité physique revêt pour ${pronom} une importance cotée à : ${importanceAp}/10. ${pronomMaj} côte sa confiance en ${pronom} pour augmenter son niveau d’AP à : ${confianceAp}/10.
+                    Sur le plan motivationnel, ${pronom} est au stade de ${getStadeMotivation()} ${getMotivationText()}. ${titre} présente les freins suivants : ${freins}, et les leviers suivants : ${leviers}. L’activité physique revêt pour ${pronom} une importance cotée à : ${importanceAp}/10. ${pronomMaj} côte sa confiance en ${pronom} pour augmenter son niveau d’AP à : ${confianceAp}/10.
 
                     Une consultation Médicale d’AP ${getConsultationText(consultationAp)}. Une épreuve d’effort ${getEpreuveEffortText(epreuveEffort)}.
 
@@ -406,6 +405,18 @@
                     return apEnvisagee === 'oui' ? 'préparation' : 'indétermination';
                 }
                 return 'indétermination';
+            }
+
+            function getMotivationText() {
+                const niveauActuel = document.querySelector('input[name="niveau_actuel"]:checked').value;
+                if (niveauActuel === 'actif') {
+                    const actifDepuis = document.querySelector('input[name="actif_depuis"]:checked').value;
+                    return actifDepuis === 'plus_6_mois' ? '(Actif depuis plus de 6 mois)' : '(Actif depuis moins de 6 mois)';
+                } else if (niveauActuel === 'inactif') {
+                    const apEnvisagee = document.querySelector('input[name="ap_envisagee"]:checked').value;
+                    return apEnvisagee === 'oui' ? '(AP envisagée dans les 30 jours)' : '(pas d’AP envisagée dans les 30 jours)';
+                }
+                return '';
             }
 
             function getConsultationText(value) {

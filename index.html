@@ -74,6 +74,21 @@
             background-color: #f9f9f9;
             border-radius: 5px;
         }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #reportOutput, #reportOutput * {
+                visibility: visible;
+            }
+            #reportOutput {
+                position: absolute;
+                left: 0;
+                top: 0;
+                font-size: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -88,30 +103,30 @@
                 <label><input type="radio" name="situation" value="symptomes"> Elle a des symptômes de maladie CV, respiratoire, métabolique et rénale décompensée</label>
                 <label><input type="radio" name="situation" value="limitations"> Elle présente des limitations ou CI à l’AP (tableau 7-9)</label>
                 <label><input type="radio" name="situation" value="situations_particulieres"> Elle est dans une des situations particulières (situation 3)</label>
+                <label><input type="radio" name="situation" value="aucune"> Votre patient n’est dans aucune de ces situations</label>
             </div>
 
             <!-- Section 2 -->
             <div class="form-group">
                 <h2>2/ Évaluation de l’Activité Physique (niveau actuel et visé, motivation)</h2>
                 <div class="sub-group">
-                    <h3>2a : Niveau actuel :</h3>
+                    <h3>2a : Niveau actuel : (mesuré par GPAQ, Marshall)</h3>
                     <div class="sub-group">
-                        <label>Statut testé par le : <input type="radio" name="questionnaire" value="GPAQ"> GPAQ <input type="radio" name="questionnaire" value="Marshall"> Marshall</label>
-                    </div>
-                    <label><input type="radio" name="niveau_actuel" value="actif"> Actif</label>
-                    <label><input type="radio" name="niveau_actuel" value="inactif"> Inactif</label>
-                    <div id="actif-subgroup" class="hidden">
-                        <label><input type="radio" name="actif_depuis" value="plus_6_mois"> Oui, depuis plus de 6 mois</label>
-                        <label><input type="radio" name="actif_depuis" value="moins_6_mois"> Non, depuis moins de 6 mois</label>
-                    </div>
-                    <div id="inactif-subgroup" class="hidden">
-                        <label><input type="radio" name="ap_envisagee" value="oui"> AP envisagée dans les 30 jours</label>
-                        <label><input type="radio" name="ap_envisagee" value="non"> Non</label>
+                        <label><input type="radio" name="niveau_actuel" value="actif"> Actif</label>
+                        <label><input type="radio" name="niveau_actuel" value="inactif"> Inactif</label>
+                        <div id="actif-subgroup" class="hidden">
+                            <label><input type="radio" name="actif_depuis" value="plus_6_mois"> Oui, depuis plus de 6 mois</label>
+                            <label><input type="radio" name="actif_depuis" value="moins_6_mois"> Non, depuis moins de 6 mois</label>
+                        </div>
+                        <div id="inactif-subgroup" class="hidden">
+                            <label><input type="radio" name="ap_envisagee" value="oui"> AP envisagée dans les 30 jours</label>
+                            <label><input type="radio" name="ap_envisagee" value="non"> Non</label>
+                        </div>
                     </div>
                     <div>
-                        <label><input type="radio" name="niveau_actuel" value="sedentaire"> Sédentaire</label>
-                        <label><input type="radio" name="niveau_actuel" value="non_sedentaire"> Non sédentaire</label>
-                        <label><input type="radio" name="niveau_actuel" value="non_recherche"> Statut de sédentarité non recherché</label>
+                        <label><input type="radio" name="sedentaire" value="sedentaire"> Sédentaire</label>
+                        <label><input type="radio" name="sedentaire" value="non_sedentaire"> Non sédentaire</label>
+                        <label><input type="radio" name="sedentaire" value="non_recherche"> Statut de sédentarité non recherché</label>
                     </div>
                 </div>
                 <div class="sub-group">
@@ -284,7 +299,8 @@
             document.getElementById('generateReport').addEventListener('click', function() {
                 const sexe = document.querySelector('input[name="sexe"]:checked').value;
                 const titre = sexe === 'homme' ? 'Monsieur' : 'Madame';
-                const pronom = sexe === 'homme' ? 'il' : 'elle';
+                const pronom = sexe === 'homme' ? 'lui' : 'elle';
+                const pronomMaj = sexe === 'homme' ? 'Il' : 'Elle';
 
                 const niveauActuel = document.querySelector('input[name="niveau_actuel"]:checked').value;
                 let statutActif = '';
@@ -294,12 +310,14 @@
                 } else if (niveauActuel === 'inactif') {
                     const apEnvisagee = document.querySelector('input[name="ap_envisagee"]:checked').value;
                     statutActif = apEnvisagee === 'oui' ? 'inactif (AP envisagée dans les 30 jours)' : 'inactif';
-                } else if (niveauActuel === 'sedentaire') {
-                    statutActif = 'inactif, sédentaire';
-                } else if (niveauActuel === 'non_sedentaire') {
-                    statutActif = 'inactif, non sédentaire';
-                } else {
-                    statutActif = 'inactif';
+                }
+
+                const sedentaire = document.querySelector('input[name="sedentaire"]:checked').value;
+                let statutSedentaire = '';
+                if (sedentaire === 'sedentaire') {
+                    statutSedentaire = ', sédentaire';
+                } else if (sedentaire === 'non_sedentaire') {
+                    statutSedentaire = ', non sédentaire';
                 }
 
                 const questionnaire = document.querySelector('input[name="questionnaire"]:checked') ? document.querySelector('input[name="questionnaire"]:checked').value : '';
@@ -347,9 +365,9 @@
                 }
 
                 const reportText = `
-                    Merci de m’avoir adressé ${titre} __________ pour une consultation d’activité physique. Son niveau actuel d’activité physique est le suivant : ${statutActif}${questionnaireText}. Le niveau d’activité physique que ${titre} vise est : ${niveauVise}. Son niveau de risque cardio-vasculaire est ${rcv}.
+                    Merci de m’avoir adressé ${titre} __________ pour une consultation d’activité physique. Son niveau actuel d’activité physique est le suivant : ${statutActif}${statutSedentaire}${questionnaireText}. Le niveau d’activité physique que ${titre} vise est : ${niveauVise}. Son niveau de risque cardio-vasculaire est ${rcv}.
 
-                    Sur le plan motivationnel, ${pronom} est au stade de ${getStadeMotivation()}. ${titre} présente les freins suivants : ${freins}, et les leviers suivants : ${leviers}. L’activité physique revêt pour ${pronom} une importance cotée à : ${importanceAp}/10. ${pronom} côte sa confiance en ${pronom} pour augmenter son niveau d’AP à : ${confianceAp}/10.
+                    Sur le plan motivationnel, ${pronom} est au stade de ${getStadeMotivation()}. ${titre} présente les freins suivants : ${freins}, et les leviers suivants : ${leviers}. L’activité physique revêt pour ${pronom} une importance cotée à : ${importanceAp}/10. ${pronomMaj} côte sa confiance en ${pronom} pour augmenter son niveau d’AP à : ${confianceAp}/10.
 
                     Une consultation Médicale d’AP ${getConsultationText(consultationAp)}. Une épreuve d’effort ${getEpreuveEffortText(epreuveEffort)}.
 

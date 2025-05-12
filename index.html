@@ -126,7 +126,7 @@
                             <label><input type="radio" name="niveau_actuel" value="inactif"> Inactif</label>
                             <div id="inactif-subgroup" class="hidden">
                                 <label><input type="radio" name="ap_envisagee" value="oui"> AP envisagée dans les 30 jours</label>
-                                <label><input type="radio" name="ap_envisagee" value="non"> Non</label>
+                                <label><input type="radio" name="ap_envisagee" value="non"> Pas d’AP envisagée dans les 30 jours</label>
                             </div>
                         </div>
                     </div>
@@ -156,19 +156,19 @@
             <div class="form-group">
                 <h2>4/ Évaluation motivationnelle (complément) :</h2>
                 <div class="sub-group">
-                    <h3>4a : La personne adressée présente les freins suivants :</h3>
+                    <h3>La personne adressée présente les freins suivants :</h3>
                     <textarea name="freins"></textarea>
                 </div>
                 <div class="sub-group">
-                    <h3>4b : La personne présente les leviers suivants :</h3>
+                    <h3>La personne présente les leviers suivants :</h3>
                     <textarea name="leviers"></textarea>
                 </div>
                 <div class="sub-group">
-                    <h3>4c : Importance accordée à l’AP de 0 à 10 :</h3>
+                    <h3>Importance accordée à l’AP de 0 à 10 :</h3>
                     <input type="number" name="importance_ap" min="0" max="10">
                 </div>
                 <div class="sub-group">
-                    <h3>4d : Confiance en soi pour réussir à augmenter son niveau d’AP de 0 à 10 :</h3>
+                    <h3>Confiance en soi pour réussir à augmenter son niveau d’AP de 0 à 10 :</h3>
                     <input type="number" name="confiance_ap" min="0" max="10">
                 </div>
             </div>
@@ -191,9 +191,15 @@
 
             <!-- Section 7 -->
             <div class="form-group">
-                <h2>7/ Je lui ai remis :</h2>
+                <h2>7/ Les objectifs principaux en termes d’activité physique sont :</h2>
+                <textarea name="objectifs_ap"></textarea>
+            </div>
+
+            <!-- Section 8 -->
+            <div class="form-group">
+                <h2>8/ Je lui ai remis :</h2>
                 <div class="sub-group">
-                    <h3>7a : Une ordonnance d’AP aérobie :</h3>
+                    <h3>Une ordonnance d’AP aérobie :</h3>
                     <label><input type="radio" name="ordonnance_aerobie" value="oui"> Oui</label>
                     <div id="ordonnance_aerobie_subgroup" class="hidden">
                         <label>Intensité : <input type="radio" name="intensite_aerobie" value="moderee"> Modérée</label>
@@ -203,7 +209,7 @@
                     <label><input type="radio" name="ordonnance_aerobie" value="non"> Non</label>
                 </div>
                 <div class="sub-group">
-                    <h3>7b : De renforcement musculaire :</h3>
+                    <h3>De renforcement musculaire :</h3>
                     <label><input type="radio" name="renforcement_musculaire" value="oui"> Oui</label>
                     <div id="renforcement_musculaire_subgroup" class="hidden">
                         <label>Fois par semaine : <input type="number" name="fois_renforcement" min="0" max="7"></label>
@@ -211,7 +217,7 @@
                     <label><input type="radio" name="renforcement_musculaire" value="non"> Non</label>
                 </div>
                 <div class="sub-group">
-                    <h3>7c : De travail de souplesse et mobilité :</h3>
+                    <h3>De travail de souplesse et mobilité :</h3>
                     <label><input type="radio" name="souplesse_mobilite" value="oui"> Oui</label>
                     <div id="souplesse_mobilite_subgroup" class="hidden">
                         <label>Fois par semaine : <input type="number" name="fois_souplesse" min="0" max="7"></label>
@@ -219,20 +225,13 @@
                     <label><input type="radio" name="souplesse_mobilite" value="non"> Non</label>
                 </div>
                 <div class="sub-group">
-                    <h3>7d : Des fiches de promotion de l’activité physique :</h3>
+                    <h3>Des fiches de promotion de l’activité physique :</h3>
                     <label><input type="radio" name="fiches_promotion" value="oui"> Oui</label>
                     <div id="fiches_promotion_subgroup" class="hidden">
                         <label>Compléter : <input type="text" name="complement_fiches"></label>
                     </div>
                     <label><input type="radio" name="fiches_promotion" value="non"> Non</label>
                 </div>
-            </div>
-
-            <!-- Section 8 -->
-            <div class="form-group">
-                <h2>8/ La personne adressée est :</h2>
-                <label><input type="radio" name="sexe" value="femme"> Une femme</label>
-                <label><input type="radio" name="sexe" value="homme"> Un homme</label>
             </div>
 
             <button type="button" id="generateReport">Générer le compte-rendu</button>
@@ -344,6 +343,9 @@
                 const consultationAp = document.querySelector('input[name="consultation_ap"]:checked').value;
                 const epreuveEffort = document.querySelector('input[name="epreuve_effort"]:checked').value;
 
+                const objectifsAp = document.querySelector('textarea[name="objectifs_ap"]').value;
+                let objectifsText = objectifsAp ? ` Les objectifs principaux en termes d’activité physique sont : ${objectifsAp}` : '';
+
                 let ordonnance = '';
                 if (document.querySelector('input[name="ordonnance_aerobie"]:checked').value === 'oui') {
                     const intensite = document.querySelector('input[name="intensite_aerobie"]:checked').value;
@@ -374,7 +376,7 @@
 
                     Sur le plan motivationnel, ${pronom} est au stade de ${getStadeMotivation()} ${getMotivationText()}. ${titre} présente les freins suivants : ${freins}, et les leviers suivants : ${leviers}. L’activité physique revêt pour ${pronom} une importance cotée à : ${importanceAp}/10. ${pronomMaj} côte sa confiance en ${pronom} pour augmenter son niveau d’AP à : ${confianceAp}/10.
 
-                    Une consultation Médicale d’AP ${getConsultationText(consultationAp)}. Une épreuve d’effort ${getEpreuveEffortText(epreuveEffort)}.
+                    Une consultation Médicale d’AP ${getConsultationText(consultationAp)}. Une épreuve d’effort ${getEpreuveEffortText(epreuveEffort)}.${objectifsText}
 
                     Je lui ai remis ${ordonnance || 'rien'}.
 

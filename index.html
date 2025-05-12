@@ -344,7 +344,7 @@
                 const epreuveEffort = document.querySelector('input[name="epreuve_effort"]:checked') ? document.querySelector('input[name="epreuve_effort"]:checked').value : '';
 
                 const objectifsAp = document.querySelector('textarea[name="objectifs_ap"]').value;
-                let objectifsText = objectifsAp ? ` Les objectifs principaux en termes d’activité physique sont : ${objectifsAp}` : '';
+                let objectifsText = objectifsAp ? `\nLes objectifs principaux en termes d’activité physique sont : ${objectifsAp}.` : '';
 
                 let ordonnance = '';
                 if (document.querySelector('input[name="ordonnance_aerobie"]:checked') && document.querySelector('input[name="ordonnance_aerobie"]:checked').value === 'oui') {

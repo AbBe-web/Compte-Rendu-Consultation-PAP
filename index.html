@@ -149,7 +149,7 @@
                 <h2>3/ Évaluation du RCV (tableau 3) :</h2>
                 <label><input type="radio" name="rcv" value="faible"> Faible</label>
                 <label><input type="radio" name="rcv" value="modere"> Modéré</label>
-                <label><input type="radio" name="rcv" value="eleve"> Élevé/très élevé</label>
+                <label><input type="radio" name="rcv" value="eleve_tres_eleve"> Élevé/très élevé</label>
             </div>
 
             <!-- Section 4 -->
@@ -303,12 +303,12 @@
 
             // Génération du compte-rendu
             document.getElementById('generateReport').addEventListener('click', function() {
-                const sexe = document.querySelector('input[name="sexe"]:checked').value;
+                const sexe = document.querySelector('input[name="sexe"]:checked') ? document.querySelector('input[name="sexe"]:checked').value : 'homme';
                 const titre = sexe === 'homme' ? 'Monsieur' : 'Madame';
                 const pronom = sexe === 'homme' ? 'lui' : 'elle';
                 const pronomMaj = sexe === 'homme' ? 'Il' : 'Elle';
 
-                const niveauActuel = document.querySelector('input[name="niveau_actuel"]:checked').value;
+                const niveauActuel = document.querySelector('input[name="niveau_actuel"]:checked') ? document.querySelector('input[name="niveau_actuel"]:checked').value : '';
                 let statutActif = '';
                 if (niveauActuel === 'actif') {
                     statutActif = 'actif';
@@ -316,7 +316,7 @@
                     statutActif = 'inactif';
                 }
 
-                const sedentaire = document.querySelector('input[name="sedentaire"]:checked').value;
+                const sedentaire = document.querySelector('input[name="sedentaire"]:checked') ? document.querySelector('input[name="sedentaire"]:checked').value : '';
                 let statutSedentaire = '';
                 if (sedentaire === 'sedentaire') {
                     statutSedentaire = ', sédentaire';
@@ -332,47 +332,47 @@
                     questionnaireText = ' (mesuré par le Marshall)';
                 }
 
-                const niveauVise = document.querySelector('input[name="niveau_vise"]:checked').value;
-                const rcv = document.querySelector('input[name="rcv"]:checked').value;
+                const niveauVise = document.querySelector('input[name="niveau_vise"]:checked') ? document.querySelector('input[name="niveau_vise"]:checked').value : '';
+                const rcv = document.querySelector('input[name="rcv"]:checked') ? document.querySelector('input[name="rcv"]:checked').value : '';
 
                 const freins = document.querySelector('textarea[name="freins"]').value;
                 const leviers = document.querySelector('textarea[name="leviers"]').value;
                 const importanceAp = document.querySelector('input[name="importance_ap"]').value;
                 const confianceAp = document.querySelector('input[name="confiance_ap"]').value;
 
-                const consultationAp = document.querySelector('input[name="consultation_ap"]:checked').value;
-                const epreuveEffort = document.querySelector('input[name="epreuve_effort"]:checked').value;
+                const consultationAp = document.querySelector('input[name="consultation_ap"]:checked') ? document.querySelector('input[name="consultation_ap"]:checked').value : '';
+                const epreuveEffort = document.querySelector('input[name="epreuve_effort"]:checked') ? document.querySelector('input[name="epreuve_effort"]:checked').value : '';
 
                 const objectifsAp = document.querySelector('textarea[name="objectifs_ap"]').value;
                 let objectifsText = objectifsAp ? ` Les objectifs principaux en termes d’activité physique sont : ${objectifsAp}` : '';
 
                 let ordonnance = '';
-                if (document.querySelector('input[name="ordonnance_aerobie"]:checked').value === 'oui') {
-                    const intensite = document.querySelector('input[name="intensite_aerobie"]:checked').value;
+                if (document.querySelector('input[name="ordonnance_aerobie"]:checked') && document.querySelector('input[name="ordonnance_aerobie"]:checked').value === 'oui') {
+                    const intensite = document.querySelector('input[name="intensite_aerobie"]:checked') ? document.querySelector('input[name="intensite_aerobie"]:checked').value : '';
                     const foisAerobie = document.querySelector('input[name="fois_aerobie"]').value;
                     ordonnance += `une ordonnance d’AP aérobie (${intensite}, ${foisAerobie} fois par semaine)`;
                 }
 
-                if (document.querySelector('input[name="renforcement_musculaire"]:checked').value === 'oui') {
+                if (document.querySelector('input[name="renforcement_musculaire"]:checked') && document.querySelector('input[name="renforcement_musculaire"]:checked').value === 'oui') {
                     const foisRenforcement = document.querySelector('input[name="fois_renforcement"]').value;
                     if (ordonnance) ordonnance += ', ';
                     ordonnance += `de renforcement musculaire (${foisRenforcement} fois par semaine)`;
                 }
 
-                if (document.querySelector('input[name="souplesse_mobilite"]:checked').value === 'oui') {
+                if (document.querySelector('input[name="souplesse_mobilite"]:checked') && document.querySelector('input[name="souplesse_mobilite"]:checked').value === 'oui') {
                     const foisSouplesse = document.querySelector('input[name="fois_souplesse"]').value;
                     if (ordonnance) ordonnance += ', ';
                     ordonnance += `de travail de souplesse et mobilité (${foisSouplesse} fois par semaine)`;
                 }
 
-                if (document.querySelector('input[name="fiches_promotion"]:checked').value === 'oui') {
+                if (document.querySelector('input[name="fiches_promotion"]:checked') && document.querySelector('input[name="fiches_promotion"]:checked').value === 'oui') {
                     const complementFiches = document.querySelector('input[name="complement_fiches"]').value;
                     if (ordonnance) ordonnance += ', ';
                     ordonnance += `ainsi que la ou les fiches de promotion de l’activité physique suivantes : ${complementFiches}`;
                 }
 
                 const reportText = `
-                    Merci de m’avoir adressé ${titre} __________ pour une consultation d’activité physique. Son niveau actuel d’activité physique est le suivant : ${statutActif}${statutSedentaire}${questionnaireText}. Le niveau d’activité physique que ${titre} vise est : ${niveauVise}. Son niveau de risque cardio-vasculaire est ${rcv}.
+                    Merci de m’avoir adressé ${titre} __________ pour une consultation d’activité physique. Son niveau actuel d’activité physique est le suivant : ${statutActif}${statutSedentaire}${questionnaireText}. Le niveau d’activité physique que ${titre} vise est : ${getNiveauViseText(niveauVise)}. Son niveau de risque cardio-vasculaire est ${getRcvText(rcv)}.
 
                     Sur le plan motivationnel, ${pronom} est au stade de ${getStadeMotivation()} ${getMotivationText()}. ${titre} présente les freins suivants : ${freins}, et les leviers suivants : ${leviers}. L’activité physique revêt pour ${pronom} une importance cotée à : ${importanceAp}/10. ${pronomMaj} côte sa confiance en ${pronom} pour augmenter son niveau d’AP à : ${confianceAp}/10.
 
@@ -398,24 +398,24 @@
             });
 
             function getStadeMotivation() {
-                const niveauActuel = document.querySelector('input[name="niveau_actuel"]:checked').value;
+                const niveauActuel = document.querySelector('input[name="niveau_actuel"]:checked') ? document.querySelector('input[name="niveau_actuel"]:checked').value : '';
                 if (niveauActuel === 'actif') {
-                    const actifDepuis = document.querySelector('input[name="actif_depuis"]:checked').value;
+                    const actifDepuis = document.querySelector('input[name="actif_depuis"]:checked') ? document.querySelector('input[name="actif_depuis"]:checked').value : '';
                     return actifDepuis === 'plus_6_mois' ? 'consolidation' : 'action';
                 } else if (niveauActuel === 'inactif') {
-                    const apEnvisagee = document.querySelector('input[name="ap_envisagee"]:checked').value;
+                    const apEnvisagee = document.querySelector('input[name="ap_envisagee"]:checked') ? document.querySelector('input[name="ap_envisagee"]:checked').value : '';
                     return apEnvisagee === 'oui' ? 'préparation' : 'indétermination';
                 }
                 return 'indétermination';
             }
 
             function getMotivationText() {
-                const niveauActuel = document.querySelector('input[name="niveau_actuel"]:checked').value;
+                const niveauActuel = document.querySelector('input[name="niveau_actuel"]:checked') ? document.querySelector('input[name="niveau_actuel"]:checked').value : '';
                 if (niveauActuel === 'actif') {
-                    const actifDepuis = document.querySelector('input[name="actif_depuis"]:checked').value;
+                    const actifDepuis = document.querySelector('input[name="actif_depuis"]:checked') ? document.querySelector('input[name="actif_depuis"]:checked').value : '';
                     return actifDepuis === 'plus_6_mois' ? '(Actif depuis plus de 6 mois)' : '(Actif depuis moins de 6 mois)';
                 } else if (niveauActuel === 'inactif') {
-                    const apEnvisagee = document.querySelector('input[name="ap_envisagee"]:checked').value;
+                    const apEnvisagee = document.querySelector('input[name="ap_envisagee"]:checked') ? document.querySelector('input[name="ap_envisagee"]:checked').value : '';
                     return apEnvisagee === 'oui' ? '(AP envisagée dans les 30 jours)' : '(pas d’AP envisagée dans les 30 jours)';
                 }
                 return '';
@@ -426,6 +426,7 @@
                     case 'oui': return 'est préconisée.';
                     case 'non': return 'n’est pas préconisée.';
                     case 'peut_etre': return 'peut être proposée.';
+                    default: return '';
                 }
             }
 
@@ -434,6 +435,25 @@
                     case 'oui': return 'est préconisée.';
                     case 'non': return 'n’est pas préconisée.';
                     case 'peut_etre': return 'peut être proposée.';
+                    default: return '';
+                }
+            }
+
+            function getNiveauViseText(value) {
+                switch(value) {
+                    case 'faible': return 'faible';
+                    case 'modere': return 'modéré';
+                    case 'eleve': return 'élevé';
+                    default: return '';
+                }
+            }
+
+            function getRcvText(value) {
+                switch(value) {
+                    case 'faible': return 'faible';
+                    case 'modere': return 'modéré';
+                    case 'eleve_tres_eleve': return 'élevé/très élevé';
+                    default: return '';
                 }
             }
         });

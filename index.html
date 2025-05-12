@@ -312,11 +312,10 @@
                 const niveauActuel = document.querySelector('input[name="niveau_actuel"]:checked').value;
                 let statutActif = '';
                 if (niveauActuel === 'actif') {
-                    const actifDepuis = document.querySelector('input[name="actif_depuis"]:checked').value;
-                    statutActif = actifDepuis === 'plus_6_mois' ? 'actif (stade consolidation)' : 'actif (stade action)';
+                    statutActif = 'actif';
                 } else if (niveauActuel === 'inactif') {
                     const apEnvisagee = document.querySelector('input[name="ap_envisagee"]:checked').value;
-                    statutActif = apEnvisagee === 'oui' ? 'inactif (AP envisagée dans les 30 jours)' : 'inactif';
+                    statutActif = apEnvisagee === 'oui' ? 'inactif' : 'inactif';
                 }
 
                 const sedentaire = document.querySelector('input[name="sedentaire"]:checked').value;

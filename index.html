@@ -71,6 +71,9 @@
             background-color: #f9f9f9;
             border-radius: 5px;
         }
+        .black-text {
+            color: black !important;
+        }
         @media print {
             body * {
                 visibility: hidden;
@@ -124,7 +127,7 @@
             <div class="form-group">
                 <h2>2/ Évaluation de l’Activité Physique (niveau actuel et visé, motivation)</h2>
                 <div class="sub-group">
-                    <h3>Niveau actuel : (mesuré par <label><input type="radio" name="questionnaire" value="GPAQ"> GPAQ</label>, <label><input type="radio" name="questionnaire" value="Marshall"> Marshall</label>)</h3>
+                    <h3>Niveau actuel : (mesuré par <label class="black-text"><input type="radio" name="questionnaire" value="GPAQ"> GPAQ</label>, <label class="black-text"><input type="radio" name="questionnaire" value="Marshall"> Marshall</label>)</h3>
                     <div style="display: flex; align-items: center;">
                         <div style="margin-right: 20px;">
                             <label><input type="radio" name="niveau_actuel" value="actif"> Actif</label>
@@ -167,19 +170,19 @@
             <div class="form-group">
                 <h2>4/ Évaluation motivationnelle (complément) :</h2>
                 <div class="sub-group">
-                    <h3>La personne adressée présente les <u>freins</u> suivants :</h3>
+                    <h3 class="black-text">La personne adressée présente les <u>freins</u> suivants :</h3>
                     <textarea name="freins"></textarea>
                 </div>
                 <div class="sub-group">
-                    <h3>La personne présente les <u>leviers</u> suivants :</h3>
+                    <h3 class="black-text">La personne présente les <u>leviers</u> suivants :</h3>
                     <textarea name="leviers"></textarea>
                 </div>
                 <div class="sub-group">
-                    <h3>Importance accordée à l’AP de 0 à 10 :</h3>
+                    <h3 class="black-text">Importance accordée à l’AP de 0 à 10 :</h3>
                     <input type="number" name="importance_ap" min="0" max="10">
                 </div>
                 <div class="sub-group">
-                    <h3>Confiance en soi pour réussir à augmenter son niveau d’AP de 0 à 10 :</h3>
+                    <h3 class="black-text">Confiance en soi pour réussir à augmenter son niveau d’AP de 0 à 10 :</h3>
                     <input type="number" name="confiance_ap" min="0" max="10">
                 </div>
             </div>
@@ -210,7 +213,7 @@
             <div class="form-group">
                 <h2>8/ Je lui ai remis :</h2>
                 <div class="sub-group">
-                    <h3>Une ordonnance d’AP aérobie :</h3>
+                    <h3 class="black-text">Une ordonnance d’AP aérobie :</h3>
                     <label><input type="radio" name="ordonnance_aerobie" value="oui"> Oui</label>
                     <div id="ordonnance_aerobie_subgroup" class="hidden">
                         <label>Intensité : <input type="radio" name="intensite_aerobie" value="moderee"> Modérée</label>
@@ -220,7 +223,7 @@
                     <label><input type="radio" name="ordonnance_aerobie" value="non"> Non</label>
                 </div>
                 <div class="sub-group">
-                    <h3>De renforcement musculaire :</h3>
+                    <h3 class="black-text">De renforcement musculaire :</h3>
                     <label><input type="radio" name="renforcement_musculaire" value="oui"> Oui</label>
                     <div id="renforcement_musculaire_subgroup" class="hidden">
                         <label>Fois par semaine : <input type="number" name="fois_renforcement" min="0" max="7"></label>
@@ -228,7 +231,7 @@
                     <label><input type="radio" name="renforcement_musculaire" value="non"> Non</label>
                 </div>
                 <div class="sub-group">
-                    <h3>De travail de souplesse et mobilité :</h3>
+                    <h3 class="black-text">De travail de souplesse et mobilité :</h3>
                     <label><input type="radio" name="souplesse_mobilite" value="oui"> Oui</label>
                     <div id="souplesse_mobilite_subgroup" class="hidden">
                         <label>Fois par semaine : <input type="number" name="fois_souplesse" min="0" max="7"></label>
@@ -236,7 +239,7 @@
                     <label><input type="radio" name="souplesse_mobilite" value="non"> Non</label>
                 </div>
                 <div class="sub-group">
-                    <h3>Des fiches de promotion de l’activité physique :</h3>
+                    <h3 class="black-text">Des fiches de promotion de l’activité physique :</h3>
                     <label><input type="radio" name="fiches_promotion" value="oui"> Oui</label>
                     <div id="fiches_promotion_subgroup" class="hidden">
                         <label>Compléter : <input type="text" name="complement_fiches"></label>

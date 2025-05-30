@@ -339,6 +339,7 @@
                 const titre = sexe === 'homme' ? 'Monsieur' : 'Madame';
                 const pronom = sexe === 'homme' ? 'il' : 'elle';
                 const pronomMaj = sexe === 'homme' ? 'Il' : 'Elle';
+                const pronomPossessif = sexe === 'homme' ? 'son' : 'sa';
 
                 const niveauActuel = document.querySelector('input[name="niveau_actuel"]:checked') ? document.querySelector('input[name="niveau_actuel"]:checked').value : '';
                 let statutActif = '';
@@ -412,19 +413,21 @@
                 const reportText = `
                     ${salutations}
 
-                    Merci de m’avoir adressé ${titre} _____ pour une consultation d’activité physique.${situationText}
+                    \nMerci de m’avoir adressé ${titre} _____ pour une consultation d’activité physique.${situationText}
 
-                    Son niveau actuel d’activité physique est le suivant : ${statutActif}${statutSedentaire}${questionnaireText}. Le niveau d’activité physique que ${pronom} vise est : ${getNiveauViseText(niveauVise)}. Son niveau de risque cardio-vasculaire est ${getRcvText(rcv)}.
+                    \nSon niveau actuel d’activité physique est le suivant : ${statutActif}${statutSedentaire}${questionnaireText}. Le niveau d’activité physique ${pronomPossessif === 'son' ? 'qu\'il' : 'qu\'elle'} vise est : ${getNiveauViseText(niveauVise)}.
 
-                    Sur le plan motivationnel, ${pronom} est au stade de ${getStadeMotivationText()} ${getMotivationText()}. L’activité physique revêt pour ${pronom} une importance cotée à : ${importanceAp}/10. ${pronomMaj} côte sa confiance en ${pronom} pour augmenter son niveau d’AP à : ${confianceAp}/10. ${objectifsText}
+                    \nSon niveau de risque cardio-vasculaire est ${getRcvText(rcv)}.
 
-                    Une consultation Médicale d’AP ${getConsultationText(consultationAp)} Une épreuve d’effort ${getEpreuveEffortText(epreuveEffort)}
+                    \nSur le plan motivationnel, ${pronom} est au stade de ${getStadeMotivationText()} ${getMotivationText()}. L’activité physique revêt pour ${pronom} une importance cotée à : ${importanceAp}/10. ${pronomMaj} côte ${pronomPossessif} confiance en ${pronom} pour augmenter ${pronomPossessif} niveau d’AP à : ${confianceAp}/10. ${objectifsText}
 
-                    Je lui ai remis ${ordonnance || 'rien'}.
+                    \nUne consultation Médicale d’AP ${getConsultationText(consultationAp)} Une épreuve d’effort ${getEpreuveEffortText(epreuveEffort)}
 
-                    J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’en en tireras des bénéfices perceptibles à court, moyen et long terme. Je me tiens à votre disposition et à la sienne en cas de questions complémentaires.
+                    \nJe lui ai remis ${ordonnance || 'rien'}.
 
-                    Bien confraternellement.
+                    \nJ’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’en en tireras des bénéfices perceptibles à court, moyen et long terme. Je me tiens à votre disposition et à la sienne en cas de questions complémentaires.
+
+                    \nBien confraternellement.
                 `;
 
                 document.getElementById('reportText').innerHTML = reportText;

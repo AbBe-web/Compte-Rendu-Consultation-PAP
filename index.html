@@ -111,7 +111,7 @@
             <a href="https://www.cnil.fr/fr/les-droits-pour-maitriser-vos-donnees-personnelles" target="_blank" rel="noopener noreferrer">Vos droits (CNIL)</a>
         </div>
         <h1>Outil de génération de compte-rendu de consultation minimale d’activité physique</h1>
-        <p>Veuillez renseigner les différents items ci-dessous pour générer le compte-rendu. Vous pouvez vous aider du « Guide Prescription Activité Physique et Lutte contre la Sédentarité ».</p>
+        <p>Veuillez renseigner les différents items ci-dessous pour générer le compte-rendu. Vous pouvez vous aider du « Guide Prescription Activité Physique et Lutte contre la Sédentarité » de la HAS.</p>
         <form id="consultationForm">
             <!-- Section 1 -->
             <div class="form-group">
@@ -261,7 +261,7 @@
     </div>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Gestion des sous-groupes
+        // Gestion des sous-groupes (inchangé)
         document.querySelectorAll('input[name="niveau_actuel"]').forEach(function(radio) {
             radio.addEventListener('change', function() {
                 if (this.value === 'actif') {
@@ -313,7 +313,7 @@
             });
         });
 
-        // Fonction pour intensité avec accents
+        // Fonctions utilitaires pour texte
         function getIntensiteAerobieText(value) {
             switch(value) {
                 case 'moderee': return 'modérée';
@@ -321,24 +321,31 @@
                 default: return value;
             }
         }
-        // Fonction pour la phrase finale selon le sexe
         function getPhraseFinale(sexe) {
             if (sexe === 'femme') {
-                return "J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’elle en tireras des bénéfices perceptibles à court et moyen terme.";
+                return "J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’elle en tireras des bénéfices perceptibles à court, moyen et long terme.";
             } else {
-                return "J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’il en tireras des bénéfices perceptibles à court et moyen terme.";
+                return "J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’il en tireras des bénéfices perceptibles à court, moyen et long terme.";
             }
         }
-        // Nouvelle fonction pour la phrase motivationnelle selon le sexe
         function getPhraseMotivationnelle(sexe, stade, motivationText, freins, leviers, importanceAp, confianceAp) {
             if (sexe === 'femme') {
-                return `Sur le plan motivationnel, elle est au stade de ${stade} ${motivationText}. Elle présente les freins suivants : ${freins}, et les leviers suivants : ${leviers}. L'importance qu'elle accorde à l’AP est à : ${importanceAp}/10 et elle côte sa confiance en elle pour réussir à augmenter son niveau d’AP à : ${confianceAp}/10.`;
+                return `Sur le plan motivationnel, elle est au stade de ${stade} ${motivationText}. Elle présente les freins suivants : ${freins}, et les leviers suivants : ${leviers}. L'importance accordée à l’AP est de ${importanceAp}/10 et la confiance en elle pour réussir est de ${confianceAp}/10.`;
             } else {
-                return `Sur le plan motivationnel, il est au stade de ${stade} ${motivationText}. Il présente les freins suivants : ${freins}, et les leviers suivants : ${leviers}. L'importance qu'il accorde à l’AP est à : ${importanceAp}/10 et il côte sa confiance en lui pour réussir à augmenter son niveau d’AP à : ${confianceAp}/10.`;
+                return `Sur le plan motivationnel, il est au stade de ${stade} ${motivationText}. Il présente les freins suivants : ${freins}, et les leviers suivants : ${leviers}. L'importance accordée à l’AP est de ${importanceAp}/10 et la confiance en lui pour réussir est de ${confianceAp}/10.`;
             }
         }
-        // Génération du compte-rendu
+        // Phrase HAS spécifique si situation 1 = "aucune"
+        function getPhraseHAS(sexe) {
+            if (sexe === 'homme') {
+                return "Il n'est pas dans une des situations rendant souhaitable d'emblée une consultation médicale d'activitéphysique selon le dans le guide de l'HAS \"Consultation et prescription médicale d'AP\" : il n'a pas actuellement de symptômes de maladie cardiovasculaire, respiratoire, métabolique ou rénale décompensée, ni de limitations ou de contre-indications à l'activité physique ni n'est dans une situation particulières.";
+            } else {
+                return "Elle n'est pas dans une des situations rendant souhaitable d'emblée une consultation médicale d'activitéphysique selon le dans le guide de l'HAS \"Consultation et prescription médicale d'AP\" : il n'a pas actuellement de symptômes de maladie cardiovasculaire, respiratoire, métabolique ou rénale décompensée, ni de limitations ou de contre-indications à l'activité physique ni n'est dans une situation particulières.";
+            }
+        }
+
         document.getElementById('generateReport').addEventListener('click', function() {
+            // Données du formulaire
             const destinataire = document.querySelector('input[name="destinataire"]:checked') ? document.querySelector('input[name="destinataire"]:checked').value : 'confrere';
             const salutations = destinataire === 'consoeur' ? 'Chère consœur,' : 'Cher confrère,';
             const sexe = document.querySelector('input[name="sexe"]:checked') ? document.querySelector('input[name="sexe"]:checked').value : 'homme';
@@ -448,10 +455,18 @@
                 confianceAp
             );
 
+            // Ajout de la phrase HAS uniquement si situation = "aucune"
+            const situation = document.querySelector('input[name="situation"]:checked') ? document.querySelector('input[name="situation"]:checked').value : '';
+            let phraseHAS = '';
+            if (situation === 'aucune') {
+                phraseHAS = getPhraseHAS(sexe) + '\n';
+            }
+
             const reportText = `
 ${salutations}
 
-Merci de m’avoir adressé ${titre} __________ pour une consultation d’activité physique. Son niveau actuel d’activité physique est le suivant : ${statutActif}${statutSedentaire}${questionnaireText}.
+Merci de m’avoir adressé ${titre} __________ pour une consultation d’activité physique.
+${phraseHAS}Son niveau actuel d’activité physique est le suivant : ${statutActif}${statutSedentaire}${questionnaireText}.
 
 ${phraseMotivationnelle}
 
@@ -483,3 +498,4 @@ Bien confraternellement.
     </script>
 </body>
 </html>
+N'hésitez pas si vous souhaitez d'autres ajustements !

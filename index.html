@@ -377,7 +377,7 @@
                 const epreuveEffort = document.querySelector('input[name="epreuve_effort"]:checked') ? document.querySelector('input[name="epreuve_effort"]:checked').value : '';
 
                 const objectifsAp = document.querySelector('textarea[name="objectifs_ap"]').value;
-                let objectifsText = objectifsAp ? `\nLes objectifs principaux en termes d’activité physique sont : ${objectifsAp}.` : '';
+                let objectifsText = objectifsAp ? `Les objectifs principaux en termes d’activité physique sont : ${objectifsAp}.` : '';
 
                 let ordonnance = '';
                 if (document.querySelector('input[name="ordonnance_aerobie"]:checked') && document.querySelector('input[name="ordonnance_aerobie"]:checked').value === 'oui') {
@@ -407,27 +407,31 @@
                 const situation = document.querySelector('input[name="situation"]:checked') ? document.querySelector('input[name="situation"]:checked').value : '';
                 let situationText = '';
                 if (situation === 'aucune') {
-                    situationText = `\n\n${pronomMaj} n’est pas dans une situation rendant souhaitable d’emblée une consultation médicale d’activité physique selon le <a href="https://www.has-sante.fr/jcms/c_2754766/fr/consultation-et-prescription-d-activite-physique">guide HAS "Consultation et prescription d'activité physique"</a> : maladie cardiovasculaire, respiratoire, métabolique ou rénale décompensée, contre-indication ou limitation à l’activité physique, situation particulière prévue dans le guide HAS.\n`;
+                    situationText = `${pronomMaj} n’est pas dans une situation rendant souhaitable d’emblée une consultation médicale d’activité physique selon le <a href="https://www.has-sante.fr/jcms/c_2754766/fr/consultation-et-prescription-d-activite-physique">guide HAS "Consultation et prescription d'activité physique"</a> : maladie cardiovasculaire, respiratoire, métabolique ou rénale décompensée, contre-indication ou limitation à l’activité physique, situation particulière prévue dans le guide HAS.<br><br>`;
                 }
 
                 const reportText = `
-                    ${salutations}
+                    ${salutations}<br><br>
 
-                    \nMerci de m’avoir adressé ${titre} _____ pour une consultation d’activité physique.${situationText}
+                    Merci de m’avoir adressé ${titre} _____ pour une consultation d’activité physique.<br><br>
 
-                    \nSon niveau actuel d’activité physique est le suivant : ${statutActif}${statutSedentaire}${questionnaireText}. Le niveau d’activité physique ${pronomPossessif === 'son' ? 'qu\'il' : 'qu\'elle'} vise est : ${getNiveauViseText(niveauVise)}.
+                    ${situationText}
 
-                    \nSon niveau de risque cardio-vasculaire est ${getRcvText(rcv)}.
+                    Son niveau actuel d’activité physique est le suivant : ${statutActif}${statutSedentaire}${questionnaireText}. Le niveau d’activité physique ${pronomPossessif === 'son' ? 'qu\'il' : 'qu\'elle'} vise est : ${getNiveauViseText(niveauVise)}.<br><br>
 
-                    \nSur le plan motivationnel, ${pronom} est au stade de ${getStadeMotivationText()} ${getMotivationText()}. L’activité physique revêt pour ${pronom} une importance cotée à : ${importanceAp}/10. ${pronomMaj} côte ${pronomPossessif} confiance en ${pronom} pour augmenter ${pronomPossessif} niveau d’AP à : ${confianceAp}/10. ${objectifsText}
+                    Son niveau de risque cardio-vasculaire est ${getRcvText(rcv)}.<br><br>
 
-                    \nUne consultation Médicale d’AP ${getConsultationText(consultationAp)} Une épreuve d’effort ${getEpreuveEffortText(epreuveEffort)}
+                    Sur le plan motivationnel, ${pronom} est au stade de ${getStadeMotivationText()} ${getMotivationText()}. L’activité physique revêt pour ${pronom} une importance cotée à : ${importanceAp}/10. ${pronomMaj} côte ${pronomPossessif} confiance en ${pronom} pour augmenter ${pronomPossessif} niveau d’AP à : ${confianceAp}/10.<br><br>
 
-                    \nJe lui ai remis ${ordonnance || 'rien'}.
+                    ${objectifsText}<br><br>
 
-                    \nJ’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’en en tireras des bénéfices perceptibles à court, moyen et long terme. Je me tiens à votre disposition et à la sienne en cas de questions complémentaires.
+                    Une consultation Médicale d’AP ${getConsultationText(consultationAp)} Une épreuve d’effort ${getEpreuveEffortText(epreuveEffort)}<br><br>
 
-                    \nBien confraternellement.
+                    Je lui ai remis ${ordonnance || 'rien'}.<br><br>
+
+                    J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’en en tireras des bénéfices perceptibles à court, moyen et long terme. Je me tiens à votre disposition et à la sienne en cas de questions complémentaires.<br><br>
+
+                    Bien confraternellement.
                 `;
 
                 document.getElementById('reportText').innerHTML = reportText;

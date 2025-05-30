@@ -125,7 +125,7 @@
             <div class="form-group">
                 <h2>2/ Évaluation de l’Activité Physique (niveau actuel et visé, motivation)</h2>
                 <div class="sub-group">
-                    <h3>Niveau actuel : (mesuré par <label><input type="radio" name="questionnaire" value="GPAQ"> GPAQ</label>, <label><input type="radio" name="questionnaire" value="Marshall"> Marshall</label> ...)</h3>
+                    <h3>Niveau actuel : (mesuré par <label><input type="radio" name="questionnaire" value="GPAQ"> GPAQ</label>, <label><input type="radio" name="questionnaire" value="Marshall"> Marshall</label>)</h3>
                     <div style="display: flex; align-items: center;">
                         <div style="margin-right: 20px;">
                             <label><input type="radio" name="niveau_actuel" value="actif"> Actif</label>
@@ -324,9 +324,17 @@
         // Fonction pour la phrase finale selon le sexe
         function getPhraseFinale(sexe) {
             if (sexe === 'femme') {
-                return "J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’elle en tireras des bénéfices perceptibles à court et long terme.";
+                return "J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’elle en tireras des bénéfices perceptibles à court et moyen terme.";
             } else {
-                return "J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’il en tireras des bénéfices perceptibles à court et long terme.";
+                return "J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’il en tireras des bénéfices perceptibles à court et moyen terme.";
+            }
+        }
+        // Nouvelle fonction pour la phrase motivationnelle selon le sexe
+        function getPhraseMotivationnelle(sexe, stade, motivationText, freins, leviers, importanceAp, confianceAp) {
+            if (sexe === 'femme') {
+                return `Sur le plan motivationnel, elle est au stade de ${stade} ${motivationText}. Elle présente les freins suivants : ${freins}, et les leviers suivants : ${leviers}. L'importance qu'elle accorde à l’AP est à : ${importanceAp}/10 et elle côte sa confiance en elle pour réussir à augmenter son niveau d’AP à : ${confianceAp}/10.`;
+            } else {
+                return `Sur le plan motivationnel, il est au stade de ${stade} ${motivationText}. Il présente les freins suivants : ${freins}, et les leviers suivants : ${leviers}. L'importance qu'il accorde à l’AP est à : ${importanceAp}/10 et il côte sa confiance en lui pour réussir à augmenter son niveau d’AP à : ${confianceAp}/10.`;
             }
         }
         // Génération du compte-rendu
@@ -335,8 +343,6 @@
             const salutations = destinataire === 'consoeur' ? 'Chère consœur,' : 'Cher confrère,';
             const sexe = document.querySelector('input[name="sexe"]:checked') ? document.querySelector('input[name="sexe"]:checked').value : 'homme';
             const titre = sexe === 'homme' ? 'Monsieur' : 'Madame';
-            const pronom = sexe === 'homme' ? 'lui' : 'elle';
-            const pronomMaj = sexe === 'homme' ? 'Il' : 'Elle';
             const niveauActuel = document.querySelector('input[name="niveau_actuel"]:checked') ? document.querySelector('input[name="niveau_actuel"]:checked').value : '';
             let statutActif = '';
             if (niveauActuel === 'actif') {
@@ -387,16 +393,67 @@
             if (document.querySelector('input[name="fiches_promotion"]:checked') && document.querySelector('input[name="fiches_promotion"]:checked').value === 'oui') {
                 const complementFiches = document.querySelector('input[name="complement_fiches"]').value;
                 if (ordonnance) ordonnance += ', ';
-                ordonnance += `ainsi que la ou les fiches de promotion de l’activité physique suivantes : ${complementFiches}`;
+                ordonnance += `ainsi que la.les fiche.s de promotion de l’activité physique suivantes : ${complementFiches}`;
             }
             const phraseFinale = getPhraseFinale(sexe);
+
+            // Récupération des stades et motivation
+            function getStadeMotivation() {
+                const niveauActuel = document.querySelector('input[name="niveau_actuel"]:checked') ? document.querySelector('input[name="niveau_actuel"]:checked').value : '';
+                if (niveauActuel === 'actif') {
+                    const actifDepuis = document.querySelector('input[name="actif_depuis"]:checked') ? document.querySelector('input[name="actif_depuis"]:checked').value : '';
+                    return actifDepuis === 'plus_6_mois' ? 'consolidation' : 'action';
+                } else if (niveauActuel === 'inactif') {
+                    const apEnvisagee = document.querySelector('input[name="ap_envisagee"]:checked') ? document.querySelector('input[name="ap_envisagee"]:checked').value : '';
+                    return apEnvisagee === 'oui' ? 'préparation' : 'indétermination';
+                }
+                return 'indétermination';
+            }
+            function getMotivationText() {
+                const niveauActuel = document.querySelector('input[name="niveau_actuel"]:checked') ? document.querySelector('input[name="niveau_actuel"]:checked').value : '';
+                if (niveauActuel === 'actif') {
+                    const actifDepuis = document.querySelector('input[name="actif_depuis"]:checked') ? document.querySelector('input[name="actif_depuis"]:checked').value : '';
+                    return actifDepuis === 'plus_6_mois' ? '(Actif depuis plus de 6 mois)' : '(Actif depuis moins de 6 mois)';
+                } else if (niveauActuel === 'inactif') {
+                    const apEnvisagee = document.querySelector('input[name="ap_envisagee"]:checked') ? document.querySelector('input[name="ap_envisagee"]:checked').value : '';
+                    return apEnvisagee === 'oui' ? '(AP envisagée dans les 30 jours)' : '(pas d’AP envisagée dans les 30 jours)';
+                }
+                return '';
+            }
+            function getConsultationText(value) {
+                switch(value) {
+                    case 'oui': return 'est préconisée.';
+                    case 'non': return 'n’est pas préconisée.';
+                    case 'peut_etre': return 'peut être proposée.';
+                    default: return '';
+                }
+            }
+            function getEpreuveEffortText(value) {
+                switch(value) {
+                    case 'oui': return 'est préconisée.';
+                    case 'non': return 'n’est pas préconisée.';
+                    case 'peut_etre': return 'peut être proposée.';
+                    default: return '';
+                }
+            }
+
+            // Phrase motivationnelle personnalisée ici
+            const phraseMotivationnelle = getPhraseMotivationnelle(
+                sexe,
+                getStadeMotivation(),
+                getMotivationText(),
+                freins,
+                leviers,
+                importanceAp,
+                confianceAp
+            );
+
             const reportText = `
 ${salutations}
 
-Merci de m’avoir adressé ${titre} __________ pour une consultation d’activité physique. Son niveau actuel d’activité physique est le suivant : ${statutActif}${statutSedentaire}${questionnaireText}. Le niveau d’activité physique qu'${sexe === 'femme' ? "elle" : "il"} vise est : ${getNiveauViseText(niveauVise)}. Son niveau de risque cardio-vasculaire est ${getRcvText(rcv)}.
+Merci de m’avoir adressé ${titre} __________ pour une consultation d’activité physique. Son niveau actuel d’activité physique est le suivant : ${statutActif}${statutSedentaire}${questionnaireText}.
 
-Sur le plan motivationnel, ${pronom} est au stade de ${getStadeMotivation()} ${getMotivationText()}. ${titre} présente les freins suivants : ${freins}, et les leviers suivants : ${leviers}.
-Importance accordée à l’AP : ${importanceAp}/10. Confiance en soi pour réussir à augmenter son niveau d’AP : ${confianceAp}/10.
+${phraseMotivationnelle}
 
 Une consultation Médicale d’AP ${getConsultationText(consultationAp)} Une épreuve d’effort ${getEpreuveEffortText(epreuveEffort)}${objectifsText}
 
@@ -406,6 +463,7 @@ ${phraseFinale}
 
 Bien confraternellement.
 `;
+
             document.getElementById('reportText').innerText = reportText;
             document.getElementById('reportOutput').classList.remove('hidden');
             document.getElementById('reportOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -421,60 +479,6 @@ Bien confraternellement.
                 console.error('Erreur lors de la copie du texte: ', err);
             });
         });
-        function getStadeMotivation() {
-            const niveauActuel = document.querySelector('input[name="niveau_actuel"]:checked') ? document.querySelector('input[name="niveau_actuel"]:checked').value : '';
-            if (niveauActuel === 'actif') {
-                const actifDepuis = document.querySelector('input[name="actif_depuis"]:checked') ? document.querySelector('input[name="actif_depuis"]:checked').value : '';
-                return actifDepuis === 'plus_6_mois' ? 'consolidation' : 'action';
-            } else if (niveauActuel === 'inactif') {
-                const apEnvisagee = document.querySelector('input[name="ap_envisagee"]:checked') ? document.querySelector('input[name="ap_envisagee"]:checked').value : '';
-                return apEnvisagee === 'oui' ? 'préparation' : 'indétermination';
-            }
-            return 'indétermination';
-        }
-        function getMotivationText() {
-            const niveauActuel = document.querySelector('input[name="niveau_actuel"]:checked') ? document.querySelector('input[name="niveau_actuel"]:checked').value : '';
-            if (niveauActuel === 'actif') {
-                const actifDepuis = document.querySelector('input[name="actif_depuis"]:checked') ? document.querySelector('input[name="actif_depuis"]:checked').value : '';
-                return actifDepuis === 'plus_6_mois' ? '(Actif depuis plus de 6 mois)' : '(Actif depuis moins de 6 mois)';
-            } else if (niveauActuel === 'inactif') {
-                const apEnvisagee = document.querySelector('input[name="ap_envisagee"]:checked') ? document.querySelector('input[name="ap_envisagee"]:checked').value : '';
-                return apEnvisagee === 'oui' ? '(AP envisagée dans les 30 jours)' : '(pas d’AP envisagée dans les 30 jours)';
-            }
-            return '';
-        }
-        function getConsultationText(value) {
-            switch(value) {
-                case 'oui': return 'est préconisée.';
-                case 'non': return 'n’est pas préconisée.';
-                case 'peut_etre': return 'peut être proposée.';
-                default: return '';
-            }
-        }
-        function getEpreuveEffortText(value) {
-            switch(value) {
-                case 'oui': return 'est préconisée.';
-                case 'non': return 'n’est pas préconisée.';
-                case 'peut_etre': return 'peut être proposée.';
-                default: return '';
-            }
-        }
-        function getNiveauViseText(value) {
-            switch(value) {
-                case 'faible': return 'faible';
-                case 'modere': return 'modéré';
-                case 'eleve': return 'élevé';
-                default: return '';
-            }
-        }
-        function getRcvText(value) {
-            switch(value) {
-                case 'faible': return 'faible';
-                case 'modere': return 'modéré';
-                case 'eleve_tres_eleve': return 'élevé/très élevé';
-                default: return '';
-            }
-        }
     });
     </script>
 </body>

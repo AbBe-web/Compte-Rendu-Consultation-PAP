@@ -417,11 +417,11 @@
 
                     ${situationText}
 
-                    Son niveau actuel d’activité physique est le suivant : ${statutActif}${statutSedentaire}${questionnaireText}. Le niveau d’activité physique ${pronomPossessif === 'son' ? 'qu\'il' : 'qu\'elle'} vise est : ${getNiveauViseText(niveauVise)}.<br><br>
+                    Son niveau actuel d’activité physique est le suivant : ${statutActif}${statutSedentaire}${questionnaireText}. Le niveau d’activité physique ${sexe === 'femme' ? 'qu’elle' : 'qu’il'} a choisi est : ${getNiveauViseText(niveauVise)}.<br><br>
 
                     Son niveau de risque cardio-vasculaire est ${getRcvText(rcv)}.<br><br>
 
-                    Sur le plan motivationnel, ${pronom} est au stade de ${getStadeMotivationText()} ${getMotivationText()}. L’activité physique revêt pour ${pronom} une importance cotée à : ${importanceAp}/10. ${pronomMaj} côte ${pronomPossessif} confiance en ${pronom} pour augmenter ${pronomPossessif} niveau d’AP à : ${confianceAp}/10.<br><br>
+                    Sur le plan motivationnel, ${pronom} est au stade de <i>${getStadeMotivation()}</i> ${getMotivationText()}. L’activité physique revêt pour ${pronom} une importance cotée à : ${importanceAp}/10. ${pronomMaj} côte ${pronomPossessif} confiance en ${pronom} pour augmenter ${pronomPossessif} niveau d’AP à : ${confianceAp}/10.<br><br>
 
                     ${objectifsText}<br><br>
 
@@ -463,7 +463,7 @@
                     return actifDepuis === 'plus_6_mois' ? 'consolidation' : 'action';
                 } else if (niveauActuel === 'inactif') {
                     const apEnvisagee = document.querySelector('input[name="ap_envisagee"]:checked') ? document.querySelector('input[name="ap_envisagee"]:checked').value : '';
-                    return apEnvisagee === 'oui' ? 'préparation' : 'indétermination';
+                    return apEnvisagee === 'oui' ? 'préparation' : 'intention';
                 }
                 return 'indétermination';
             }

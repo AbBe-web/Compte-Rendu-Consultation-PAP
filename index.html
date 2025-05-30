@@ -125,7 +125,11 @@
             <div class="form-group">
                 <h2>2/ Évaluation de l’Activité Physique (niveau actuel et visé, motivation)</h2>
                 <div class="sub-group">
-                    <h3>Niveau actuel : (mesuré par <label><input type="radio" name="questionnaire" value="GPAQ"> GPAQ</label>, <label><input type="radio" name="questionnaire" value="Marshall"> Marshall</label>)</h3>
+                    <h3>Niveau actuel : (mesuré par 
+                        <label><input type="radio" name="questionnaire" value="GPAQ"> GPAQ</label>, 
+                        <label><input type="radio" name="questionnaire" value="Marshall"> Marshall</label>
+                        )
+                    </h3>
                     <div style="display: flex; align-items: center;">
                         <div style="margin-right: 20px;">
                             <label><input type="radio" name="niveau_actuel" value="actif"> Actif</label>
@@ -323,29 +327,29 @@
         }
         function getPhraseFinale(sexe) {
             if (sexe === 'femme') {
-                return "J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’elle en tireras des bénéfices perceptibles à court, moyen et long terme.";
+                return "J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’elle en tireras des bénéfices perceptibles à court et long terme.";
             } else {
-                return "J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’il en tireras des bénéfices perceptibles à court, moyen et long terme.";
+                return "J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’il en tireras des bénéfices perceptibles à court et long terme.";
             }
         }
         function getPhraseMotivationnelle(sexe, stade, motivationText, freins, leviers, importanceAp, confianceAp) {
             if (sexe === 'femme') {
-                return `Sur le plan motivationnel, elle est au stade de ${stade} ${motivationText}. Elle présente les freins suivants : ${freins}, et les leviers suivants : ${leviers}. L'importance accordée à l’AP est de ${importanceAp}/10 et la confiance en elle pour réussir est de ${confianceAp}/10.`;
+                return `Sur le plan motivationnel, elle est au stade de ${stade} ${motivationText}. Elle présente les freins suivants : ${freins}, et les leviers suivants : ${leviers}. L'importance qu'elle accorde à l’AP (0 à 10) est : ${importanceAp}. Elle côte sa confiance en elle pour réussir à augmenter son niveau d’AP (0 à 10) à : ${confianceAp}.`;
             } else {
-                return `Sur le plan motivationnel, il est au stade de ${stade} ${motivationText}. Il présente les freins suivants : ${freins}, et les leviers suivants : ${leviers}. L'importance accordée à l’AP est de ${importanceAp}/10 et la confiance en lui pour réussir est de ${confianceAp}/10.`;
+                return `Sur le plan motivationnel, il est au stade de ${stade} ${motivationText}. Il présente les freins suivants : ${freins}, et les leviers suivants : ${leviers}. L'importance qu'il accorde à l’AP (0 à 10) est : ${importanceAp}. Il côte sa confiance en lui pour réussir à augmenter son niveau d’AP (0 à 10) à : ${confianceAp}.`;
             }
         }
-        // Phrase HAS spécifique si situation 1 = "aucune"
         function getPhraseHAS(sexe) {
             if (sexe === 'homme') {
-                return "Il n'est pas dans une des situations rendant souhaitable d'emblée une consultation médicale d'activitéphysique selon le dans le guide de l'HAS \"Consultation et prescription médicale d'AP\" : il n'a pas actuellement de symptômes de maladie cardiovasculaire, respiratoire, métabolique ou rénale décompensée, ni de limitations ou de contre-indications à l'activité physique ni n'est dans une situation particulières.";
+                return "Il n'est pas dans une des situations rendant souhaitable d'emblée une consultation médicale d'activité physique selon le guide de l'HAS \"Consultation et prescription médicale d’activité physique chez l’adulte\". Les recommandations générales d’AP peuvent donc être envisagées dans le guide HAS.";
             } else {
-                return "Elle n'est pas dans une des situations rendant souhaitable d'emblée une consultation médicale d'activitéphysique selon le dans le guide de l'HAS \"Consultation et prescription médicale d'AP\" : il n'a pas actuellement de symptômes de maladie cardiovasculaire, respiratoire, métabolique ou rénale décompensée, ni de limitations ou de contre-indications à l'activité physique ni n'est dans une situation particulières.";
+                return "Elle n'est pas dans une des situations rendant souhaitable d'emblée une consultation médicale d'activité physique selon le guide de l'HAS \"Consultation et prescription médicale d’activité physique chez l’adulte\". Les recommandations générales d’AP peuvent donc être envisagées dans le guide HAS.";
             }
         }
+        // ... autres fonctions utilitaires inchangées ...
 
         document.getElementById('generateReport').addEventListener('click', function() {
-            // Données du formulaire
+            // ... récupération des données du formulaire inchangée ...
             const destinataire = document.querySelector('input[name="destinataire"]:checked') ? document.querySelector('input[name="destinataire"]:checked').value : 'confrere';
             const salutations = destinataire === 'consoeur' ? 'Chère consœur,' : 'Cher confrère,';
             const sexe = document.querySelector('input[name="sexe"]:checked') ? document.querySelector('input[name="sexe"]:checked').value : 'homme';
@@ -459,14 +463,18 @@
             const situation = document.querySelector('input[name="situation"]:checked') ? document.querySelector('input[name="situation"]:checked').value : '';
             let phraseHAS = '';
             if (situation === 'aucune') {
-                phraseHAS = getPhraseHAS(sexe) + '\n';
+                phraseHAS = getPhraseHAS(sexe);
             }
 
-            const reportText = `
-${salutations}
+            // Ajout d'un saut de ligne après la phrase "Merci de m’avoir adressé ..."
+            // Ajout d'un saut de ligne après la phrase HAS si elle existe
+            const reportText = 
+`${salutations}
 
 Merci de m’avoir adressé ${titre} __________ pour une consultation d’activité physique.
-${phraseHAS}Son niveau actuel d’activité physique est le suivant : ${statutActif}${statutSedentaire}${questionnaireText}.
+\n
+${phraseHAS ? phraseHAS + '\n' : ''}${phraseHAS ? '\n' : ''}
+Son niveau actuel d’activité physique est le suivant : ${statutActif}${statutSedentaire}${questionnaireText}.
 
 ${phraseMotivationnelle}
 
@@ -498,4 +506,3 @@ Bien confraternellement.
     </script>
 </body>
 </html>
-N'hésitez pas si vous souhaitez d'autres ajustements !

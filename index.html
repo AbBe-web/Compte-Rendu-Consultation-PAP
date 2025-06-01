@@ -103,7 +103,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- Bandeau RGPD -->
         <div class="rgpd-banner">
             Ce questionnaire, hébergé sur le site Github, ne stocke pas vos données. Vous pouvez l'imprimer pour votre usage personnel ou médical.
             En continuant, vous acceptez que les données saisies puissent être affichées sur votre écran ou imprimées.
@@ -114,7 +113,6 @@
         <p>Veuillez renseigner les différents items ci-dessous pour générer le compte-rendu. Vous pouvez vous aider du « Guide Prescription Activité Physique et Lutte contre la Sédentarité (« Adulte » >15 ans) »</p>
 
         <form id="consultationForm">
-            <!-- Section 1 -->
             <div class="form-group">
                 <h2>1/ La personne adressée est dans une des situations suivantes (page 3) :</h2>
                 <label><input type="radio" name="situation" value="symptomes"> Elle a des symptômes de maladie CV, respiratoire, métabolique et rénale décompensée</label>
@@ -123,7 +121,6 @@
                 <label><input type="radio" name="situation" value="aucune"> Votre patient n’est dans aucune de ces situations</label>
             </div>
 
-            <!-- Section 2 -->
             <div class="form-group">
                 <h2>2/ Évaluation de l’Activité Physique (niveau actuel et visé, motivation)</h2>
                 <div class="sub-group">
@@ -158,7 +155,6 @@
                 </div>
             </div>
 
-            <!-- Section 3 -->
             <div class="form-group">
                 <h2>3/ Évaluation du RCV (tableau 3) :</h2>
                 <label><input type="radio" name="rcv" value="faible"> Faible</label>
@@ -166,7 +162,6 @@
                 <label><input type="radio" name="rcv" value="eleve_tres_eleve"> Élevé/très élevé</label>
             </div>
 
-            <!-- Section 4 -->
             <div class="form-group">
                 <h2>4/ Évaluation motivationnelle (complément) :</h2>
                 <div class="sub-group">
@@ -187,7 +182,6 @@
                 </div>
             </div>
 
-            <!-- Section 5 -->
             <div class="form-group">
                 <h2>5/ Une consultation Médicale d’AP est préconisée :</h2>
                 <label><input type="radio" name="consultation_ap" value="oui"> Oui</label>
@@ -195,7 +189,6 @@
                 <label><input type="radio" name="consultation_ap" value="peut_etre"> Peut être proposée</label>
             </div>
 
-            <!-- Section 6 -->
             <div class="form-group">
                 <h2>6/ Une épreuve d’effort est préconisée :</h2>
                 <label><input type="radio" name="epreuve_effort" value="oui"> Oui</label>
@@ -203,13 +196,11 @@
                 <label><input type="radio" name="epreuve_effort" value="peut_etre"> Peut être proposée</label>
             </div>
 
-            <!-- Section 7 -->
             <div class="form-group">
                 <h2>7/ Les objectifs principaux en termes d’activité physique sont :</h2>
                 <textarea name="objectifs_ap"></textarea>
             </div>
 
-            <!-- Section 8 -->
             <div class="form-group">
                 <h2>8/ Je lui ai remis :</h2>
                 <div class="sub-group">
@@ -248,14 +239,12 @@
                 </div>
             </div>
 
-            <!-- Section 9 -->
             <div class="form-group">
                 <h2>9/ La personne adressée est :</h2>
                 <label><input type="radio" name="sexe" value="homme"> Un homme</label>
                 <label><input type="radio" name="sexe" value="femme"> Une femme</label>
             </div>
 
-            <!-- Section 10 -->
             <div class="form-group">
                 <h2>10/ Le destinataire du courrier est :</h2>
                 <label><input type="radio" name="destinataire" value="consoeur"> Une consœur</label>
@@ -274,7 +263,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Gestion des sous-groupes
             document.querySelectorAll('input[name="niveau_actuel"]').forEach(function(radio) {
                 radio.addEventListener('change', function() {
                     if (this.value === 'actif') {
@@ -330,7 +318,6 @@
                 });
             });
 
-            // Génération du compte-rendu
             document.getElementById('generateReport').addEventListener('click', function() {
                 const destinataire = document.querySelector('input[name="destinataire"]:checked') ? document.querySelector('input[name="destinataire"]:checked').value : 'confrere';
                 const salutations = destinataire === 'consoeur' ? 'Chère consœur,' : 'Cher confrère,';
@@ -339,7 +326,6 @@
                 const titre = sexe === 'homme' ? 'Monsieur' : 'Madame';
                 const pronom = sexe === 'homme' ? 'il' : 'elle';
                 const pronomMaj = sexe === 'homme' ? 'Il' : 'Elle';
-                const pronomPossessif = sexe === 'homme' ? 'son' : 'sa';
 
                 const niveauActuel = document.querySelector('input[name="niveau_actuel"]:checked') ? document.querySelector('input[name="niveau_actuel"]:checked').value : '';
                 let statutActif = '';
@@ -421,7 +407,7 @@
 
                     Son niveau de risque cardio-vasculaire est ${getRcvText(rcv)}.<br><br>
 
-                    Sur le plan motivationnel, ${pronom} est au stade de <i>${getStadeMotivation()}</i> ${getMotivationText()}. L’activité physique revêt pour ${sexe === 'homme' ? 'lui' : pronom} une importance cotée à : ${importanceAp}/10.<span style="line-height: 0.5;">${pronomMaj} côte sa confiance en ${sexe === 'homme' ? 'lui' : pronom} pour augmenter son niveau d’AP à : ${confianceAp}/10.</span><br>
+                    Sur le plan motivationnel, ${pronom} est au stade de <i>${getStadeMotivation()}</i> ${getMotivationText()}. L’activité physique revêt pour ${sexe === 'homme' ? 'lui' : pronom} une importance cotée à : ${importanceAp}/10. ${pronomMaj} côte sa confiance en ${sexe === 'homme' ? 'lui' : pronom} pour augmenter son niveau d’AP à : ${confianceAp}/10.<br><br>
 
                     ${objectifsText}<br><br>
 
@@ -437,16 +423,13 @@
                 document.getElementById('reportText').innerHTML = reportText;
                 document.getElementById('reportOutput').classList.remove('hidden');
 
-                // Faire défiler jusqu'au texte généré
                 document.getElementById('reportOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
 
-            // Impression du compte-rendu
             document.getElementById('printReport').addEventListener('click', function() {
                 window.print();
             });
 
-            // Copie du compte-rendu
             document.getElementById('copyReport').addEventListener('click', function() {
                 const reportText = document.getElementById('reportText').innerText;
                 navigator.clipboard.writeText(reportText).then(function() {

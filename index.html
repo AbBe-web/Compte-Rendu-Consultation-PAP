@@ -362,22 +362,20 @@
                 const situation = document.querySelector('input[name="situation"]:checked') ? document.querySelector('input[name="situation"]:checked').value : '';
                 let situationText = '';
                 if (situation === 'aucune') {
-                    situationText = `${pronomMaj} n’est pas dans une situation rendant souhaitable d’emblée une consultation médicale d’activité physique selon le <a href="https://www.has-sante.fr/jcms/c_2754766/fr/consultation-et-prescription-d-activite-physique">guide HAS "Consultation et prescription d'activité physique"</a> : maladie cardiovasculaire, respiratoire, métabolique ou rénale décompensée, contre-indication ou limitation à l’activité physique, situation particulière prévue dans le guide HAS.<br><br>`;
+                    situationText = `${pronomMaj} n’est pas dans une situation rendant souhaitable d’emblée une consultation médicale d’activité physique selon le <a href="https://www.has-sante.fr/jcms/c_2754766/fr/consultation-et-prescription-d-activite-physique">guide HAS "Consultation et prescription d'activité physique"</a> : maladie cardiovasculaire, respiratoire, métabolique ou rénale décompensée, contre-indication ou limitation à l’activité physique, situation particulière prévue dans le guide HAS.`;
                 }
                 const reportText = `
-                    ${salutations}<br><br>
-                    Merci de m’avoir adressé ${titre} _____ pour une consultation d’activité physique.<br><br>
-                    ${situationText}
-                    Son niveau actuel d’activité physique est le suivant : ${statutActif}${statutSedentaire}${questionnaireText}. Le niveau d’activité physique ${sexe === 'femme' ? 'qu’elle' : 'qu’il'} a choisi est : ${getNiveauViseText(niveauVise)}.<br><br>
-                    Son niveau de risque cardio-vasculaire est ${getRcvText(rcv)}.<br><br>
-                    Sur le plan motivationnel, ${pronom} est au stade de <i>${getStadeMotivation()}</i> ${getMotivationText()}. L’activité physique revêt pour ${sexe === 'homme' ? 'lui' : pronom} une importance cotée à : ${importanceAp}/10. ${pronomMaj} côte sa confiance en ${sexe === 'homme' ? 'lui' : pronom} pour augmenter son niveau d’AP à : ${confianceAp}/10.<br>
-                    Les freins à la pratique de l’activité physique sont les suivants : ${freins}<br>
-                    Les leviers à la pratique sont les suivants : ${leviers}<br><br>
-                    ${objectifsText}<br><br>
-                    Une consultation Médicale d’AP ${getConsultationText(consultationAp)} Une épreuve d’effort ${getEpreuveEffortText(epreuveEffort)}<br><br>
-                    Je lui ai remis ${ordonnance || 'rien'}.<br><br>
-                    J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’en en tireras des bénéfices perceptibles à court, moyen et long terme. Je me tiens à votre disposition et à la sienne en cas de questions complémentaires.<br><br>
-                    Bien confraternellement.
+                    <p>${salutations}</p>
+                    <p>Merci de m’avoir adressé ${titre} _____ pour une consultation d’activité physique.</p>
+                    <p>${situationText}</p>
+                    <p>Son niveau actuel d’activité physique est le suivant : ${statutActif}${statutSedentaire}${questionnaireText}. Le niveau d’activité physique ${sexe === 'femme' ? 'qu’elle' : 'qu’il'} a choisi est : ${getNiveauViseText(niveauVise)}.</p>
+                    <p>Son niveau de risque cardio-vasculaire est ${getRcvText(rcv)}.</p>
+                    <p>Sur le plan motivationnel, ${pronom} est au stade de <i>${getStadeMotivation()}</i> ${getMotivationText()}. L’activité physique revêt pour ${sexe === 'homme' ? 'lui' : pronom} une importance cotée à : ${importanceAp}/10. ${pronomMaj} côte sa confiance en ${sexe === 'homme' ? 'lui' : pronom} pour augmenter son niveau d’AP à : ${confianceAp}/10. Les freins à la pratique de l’activité physique sont les suivants : ${freins}. Les leviers à la pratique sont les suivants : ${leviers}.</p>
+                    <p>${objectifsText}</p>
+                    <p>Une consultation Médicale d’AP ${getConsultationText(consultationAp)} Une épreuve d’effort ${getEpreuveEffortText(epreuveEffort)}</p>
+                    <p>Je lui ai remis ${ordonnance || 'rien'}.</p>
+                    <p>J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’en en tireras des bénéfices perceptibles à court, moyen et long terme. Je me tiens à votre disposition et à la sienne en cas de questions complémentaires.</p>
+                    <p>Bien confraternellement.</p>
                 `;
                 document.getElementById('reportText').innerHTML = reportText;
                 document.getElementById('reportOutput').classList.remove('hidden');

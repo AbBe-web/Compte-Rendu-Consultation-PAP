@@ -355,9 +355,8 @@
                     ordonnance += `de travail de souplesse et mobilité (${foisSouplesse} fois par semaine)`;
                 }
                 if (document.querySelector('input[name="fiches_promotion"]:checked') && document.querySelector('input[name="fiches_promotion"]:checked').value === 'oui') {
-                    const complementFiches = document.querySelector('input[name="complement_fiches"]').value;
                     if (ordonnance) ordonnance += ', ';
-                    ordonnance += `ainsi que la ou les fiches de promotion de l’activité physique suivantes : ${complementFiches}`;
+                    ordonnance += `ainsi qu’une fiche d’information et de promotion de l’activité physique.`;
                 }
                 const situation = document.querySelector('input[name="situation"]:checked') ? document.querySelector('input[name="situation"]:checked').value : '';
                 let situationText = '';
@@ -373,8 +372,8 @@
                     <p>Sur le plan motivationnel, ${pronom} est au stade de <i>${getStadeMotivation()}</i> ${getMotivationText()}. L’activité physique revêt pour ${sexe === 'homme' ? 'lui' : pronom} une importance cotée à : ${importanceAp}/10. ${pronomMaj} côte sa confiance en ${sexe === 'homme' ? 'lui' : pronom} pour augmenter son niveau d’AP à : ${confianceAp}/10. Les freins à la pratique de l’activité physique sont les suivants : ${freins}. Les leviers à la pratique sont les suivants : ${leviers}.</p>
                     <p>${objectifsText}</p>
                     <p>Une consultation Médicale d’AP ${getConsultationText(consultationAp)} Une épreuve d’effort ${getEpreuveEffortText(epreuveEffort)}</p>
-                    <p>Je lui ai remis ${ordonnance || 'rien'}.</p>
-                    <p>J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et qu’en en tireras des bénéfices perceptibles à court, moyen et long terme. Je me tiens à votre disposition et à la sienne en cas de questions complémentaires.</p>
+                    <p>Lui ont été remis ${ordonnance || 'rien'}.</p>
+                    <p>J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité en en percevant des bénéfices déjà à court et moyen terme. Je me tiens à disposition en cas de questions complémentaires.</p>
                     <p>Bien confraternellement.</p>
                 `;
                 document.getElementById('reportText').innerHTML = reportText;

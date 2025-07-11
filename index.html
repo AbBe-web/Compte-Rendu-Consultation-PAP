@@ -224,9 +224,6 @@
                 <div class="sub-group">
                     <h3 class="black-text">Des fiches de promotion de l’activité physique :</h3>
                     <label><input type="radio" name="fiches_promotion" value="oui"> Oui</label>
-                    <div id="fiches_promotion_subgroup" class="hidden">
-                        <label>Compléter : <input type="text" name="complement_fiches"></label>
-                    </div>
                     <label><input type="radio" name="fiches_promotion" value="non"> Non</label>
                 </div>
             </div>
@@ -291,15 +288,6 @@
                     }
                 });
             });
-            document.querySelectorAll('input[name="fiches_promotion"]').forEach(function(radio) {
-                radio.addEventListener('change', function() {
-                    if (this.value === 'oui') {
-                        document.getElementById('fiches_promotion_subgroup').classList.remove('hidden');
-                    } else {
-                        document.getElementById('fiches_promotion_subgroup').classList.add('hidden');
-                    }
-                });
-            });
             document.getElementById('generateReport').addEventListener('click', function() {
                 const destinataire = document.querySelector('input[name="destinataire"]:checked') ? document.querySelector('input[name="destinataire"]:checked').value : 'confrere';
                 const salutations = destinataire === 'consoeur' ? 'Chère consœur,' : 'Cher confrère,';
@@ -356,7 +344,7 @@
                 }
                 if (document.querySelector('input[name="fiches_promotion"]:checked') && document.querySelector('input[name="fiches_promotion"]:checked').value === 'oui') {
                     if (ordonnance) ordonnance += ', ';
-                    ordonnance += `ainsi qu’une fiche d’information et de promotion de l’activité physique.`;
+                    ordonnance += `ainsi qu’une fiche d’information et de promotion de l’activité physique`;
                 }
                 const situation = document.querySelector('input[name="situation"]:checked') ? document.querySelector('input[name="situation"]:checked').value : '';
                 let situationText = '';
@@ -373,7 +361,7 @@
                     <p>${objectifsText}</p>
                     <p>Une consultation Médicale d’AP ${getConsultationText(consultationAp)} Une épreuve d’effort ${getEpreuveEffortText(epreuveEffort)}</p>
                     <p>Lui ont été remis ${ordonnance || 'rien'}.</p>
-                    <p>J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité en en percevant des bénéfices déjà à court et moyen terme. Je me tiens à disposition en cas de questions complémentaires.</p>
+                    <p>J’espère que cette consultation l’aidera à augmenter son niveau d’activité physique en toute sécurité et pour en tirer des bénéfices perceptibles notamment à court et moyen terme. Je me tiens à votre disposition en cas de questions complémentaires.</p>
                     <p>Bien confraternellement.</p>
                 `;
                 document.getElementById('reportText').innerHTML = reportText;
